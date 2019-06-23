@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/comm_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_top" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm_33"
+            android:layout_marginTop="@dimen/dm_16"
+            android:layout_marginRight="@dimen/dm_33"
+            android:background="@drawable/system_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm_15"
+            android:layout_marginTop="@dimen/dm_26"
+            android:text="@string/system_phone"
+            android:textColor="@color/tv_25292F"
+            android:textSize="@dimen/dm_12" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dm_15"
+            android:text="@string/system_title"
+            android:textColor="@color/tv_666"
+            android:textSize="@dimen/dm_10" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dm_5"
+            android:background="@color/v_d" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm_15"
+            android:layout_marginTop="@dimen/dm_16"
+            android:text="设置初始时间"
+            android:textColor="@color/tv_25292F"
+            android:textSize="@dimen/dm_14" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dm_20"
+            android:textColor="@color/green_bg"
+            android:textSize="@dimen/dm_20" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dm_10"
+            android:textColor="@color/green_bg"
+            android:textSize="@dimen/dm_11" />
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dm_35"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/dm_40"
+            android:layout_marginRight="@dimen/dm_40"
+            android:layout_marginTop="@dimen/dm_20"
+            android:background="@drawable/btn_bg"
+            android:gravity="center"
+            android:text="设置时间"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dm_15" />
+    </LinearLayout>
+
+</LinearLayout>

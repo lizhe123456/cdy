@@ -7,5 +7,4 @@ package com.whmnrc.cdy.bean;
 public class RadonDataBean {
 
 
-
 }

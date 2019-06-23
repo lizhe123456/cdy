@@ -2,6 +2,8 @@ package com.whmnrc.cdy.base;
 
 import android.app.Application;
 
+import com.blankj.utilcode.util.Utils;
+
 /**
  * Created by lizhe on 2019/5/30.
  */
@@ -20,5 +22,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        Utils.init(this);
     }
 }

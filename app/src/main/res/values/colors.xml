@@ -3,4 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="tv_25292F">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="comm_bg">#F1F1F1</color>
+    <color name="tv_666">#666666</color>
+    <color name="app_theme_color">#63C03E</color>
+    <color name="v_d">#DDDDDD</color>
+    <color name="green_bg">#63C03E</color>
 </resources>
