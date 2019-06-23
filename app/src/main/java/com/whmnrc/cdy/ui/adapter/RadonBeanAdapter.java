@@ -3,12 +3,12 @@ package com.whmnrc.cdy.ui.adapter;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.whmnrc.cdy.R;
 import com.whmnrc.cdy.base.adapter.BaseAdapter;
 import com.whmnrc.cdy.base.adapter.BaseViewHolder;
 import com.whmnrc.cdy.bean.RadonBean;
+import com.whmnrc.cdy.ui.DataDetailsActivity;
 
 public class RadonBeanAdapter extends BaseAdapter<RadonBean> {
 
@@ -31,6 +31,14 @@ public class RadonBeanAdapter extends BaseAdapter<RadonBean> {
 
 
         holder.setVisible(R.id.iv_select, isSelect);
+        if (!isSelect){
+            holder.setOnClickListener(R.id.content, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DataDetailsActivity.start(getContext(),item);
+                }
+            });
+        }
         ImageView imageView = holder.getView(R.id.iv_select);
         imageView.setSelected(item.isSelect());
         holder.setOnClickListener(R.id.iv_select, new View.OnClickListener() {

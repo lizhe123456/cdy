@@ -37,7 +37,7 @@ android {
 
     greendao {
         schemaVersion 1
-        daoPackage 'com.qiufeng.greendao.greendao.gen'
+        daoPackage 'com.whmnrc.cdy.db'
         targetGenDir 'src/main/java'
     }
 

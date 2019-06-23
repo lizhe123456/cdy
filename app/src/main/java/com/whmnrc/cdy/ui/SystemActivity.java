@@ -4,8 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.bigkoo.pickerview.TimePickerView;
+import com.blankj.utilcode.util.TimeUtils;
 import com.whmnrc.cdy.R;
 import com.whmnrc.cdy.base.BaseActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -33,7 +40,11 @@ public class SystemActivity extends BaseActivity {
         tvTitle.setText("关于我们");
 
 
+        loadDate();
 
+    }
+
+    private void loadDate() {
 
     }
 
@@ -46,8 +57,20 @@ public class SystemActivity extends BaseActivity {
                 break;
             case R.id.tv_confirm:
                 //设置时间
-
+                showSelectDateDialog();
                 break;
         }
+    }
+
+    private void showSelectDateDialog() {
+        new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                Intent intent=new Intent();
+                intent.setAction("ACTION_UPDATE_TIME");
+                intent.putExtra("cmd", TimeUtils.date2String(date,new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")));
+                sendBroadcast(intent,null);
+            }
+        }).build().show();
     }
 }

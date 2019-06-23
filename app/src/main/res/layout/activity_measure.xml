@@ -1,14 +1,338 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <include layout="@layout/layout_top"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_top" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_title"
+        android:text="空气氡"
+        android:drawablePadding="@dimen/dm_6"
+        android:textColor="@color/tv_25292F"
+        android:textSize="@dimen/dm_15"
+        android:layout_marginTop="@dimen/dm_10"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/dm_10"
+        android:layout_marginLeft="@dimen/dm_15"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical">
 
-        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_10"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="密封时间"
+                    android:textColor="@color/tv_666"
+                    android:textSize="@dimen/dm_14"
+
+                    />
+
+                <EditText
+                    android:id="@+id/tv_mf_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_15"
+                    android:background="@null"
+                    android:textColorHint="@color/tv_666"
+                    android:hint="请输入密封时间（分钟）"
+                    android:digits="1234567890"
+                    android:maxLines="1"
+                    android:maxLength="16"
+                    android:textColor="@color/tv_25292F"
+                    android:textSize="@dimen/dm_14" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/ll_la1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_0.5"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/v_d" />
+
+            <LinearLayout
+                android:id="@+id/ll_la2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_10"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="抽气时间"
+                    android:textColor="@color/tv_666"
+                    android:textSize="@dimen/dm_14"
+
+                    />
+
+                <EditText
+                    android:id="@+id/tv_cq_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_15"
+                    android:background="@null"
+                    android:textColorHint="@color/tv_666"
+                    android:hint="请输入抽气时间（分钟）"
+                    android:digits="1234567890"
+                    android:maxLines="1"
+                    android:maxLength="16"
+                    android:textColor="@color/tv_25292F"
+                    android:textSize="@dimen/dm_14" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_d_2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_0.5"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/v_d" />
+
+            <LinearLayout
+                android:id="@+id/ll_la3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_10"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测量时间"
+                    android:textColor="@color/tv_666"
+                    android:textSize="@dimen/dm_14"
+
+                    />
+
+                <EditText
+                    android:id="@+id/tv_cl_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_15"
+                    android:background="@null"
+                    android:textColorHint="@color/tv_666"
+                    android:hint="请输入测量时间（分钟）"
+                    android:digits="1234567890"
+                    android:maxLines="1"
+                    android:maxLength="16"
+                    android:textColor="@color/tv_25292F"
+                    android:textSize="@dimen/dm_14" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_d_3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_0.5"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/v_d" />
+
+            <LinearLayout
+                android:id="@+id/ll_la4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_10"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="排气时间"
+                    android:textColor="@color/tv_666"
+                    android:textSize="@dimen/dm_14"
+
+                    />
+
+                <EditText
+                    android:id="@+id/tv_pq_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_15"
+                    android:background="@null"
+                    android:textColorHint="@color/tv_666"
+                    android:hint="请输入排气时间（分钟）"
+                    android:digits="1234567890"
+                    android:maxLines="1"
+                    android:maxLength="16"
+                    android:textColor="@color/tv_25292F"
+                    android:textSize="@dimen/dm_14" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_d_4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_0.5"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/v_d" />
+
+            <LinearLayout
+                android:id="@+id/ll_la5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_10"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="间隔时间"
+                    android:textColor="@color/tv_666"
+                    android:textSize="@dimen/dm_14"
+
+                    />
+
+                <EditText
+                    android:id="@+id/tv_jg_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_15"
+                    android:background="@null"
+                    android:textColorHint="@color/tv_666"
+                    android:hint="请输入间隔时间（分钟）"
+                    android:digits="1234567890"
+                    android:maxLines="1"
+                    android:maxLength="16"
+                    android:textColor="@color/tv_25292F"
+                    android:textSize="@dimen/dm_14" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_d_5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_0.5"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/v_d" />
+
+            <LinearLayout
+                android:id="@+id/ll_la6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_10"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="系数            "
+                    android:textColor="@color/tv_666"
+                    android:textSize="@dimen/dm_12"
+
+                    />
+
+                <EditText
+                    android:id="@+id/tv_xishu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_15"
+                    android:background="@null"
+                    android:textColorHint="@color/tv_666"
+                    android:hint="请输入系数"
+                    android:digits="1234567890."
+                    android:maxLines="1"
+                    android:maxLength="16"
+                    android:textColor="@color/tv_25292F"
+                    android:textSize="@dimen/dm_14" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_d_6"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_0.5"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/v_d" />
+
+            <LinearLayout
+                android:id="@+id/ll_la7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_10"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本底         "
+                    android:textColor="@color/tv_666"
+                    android:textSize="@dimen/dm_14"
+
+                    />
+
+                <EditText
+                    android:id="@+id/tv_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_15"
+                    android:background="@null"
+                    android:textColorHint="@color/tv_666"
+                    android:hint="请输入本底"
+                    android:digits="1234567890."
+                    android:maxLines="1"
+                    android:maxLength="16"
+                    android:textColor="@color/tv_25292F"
+                    android:textSize="@dimen/dm_14" />
+            </LinearLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_35"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/dm_40"
+        android:layout_marginTop="@dimen/dm_50"
+        android:layout_marginRight="@dimen/dm_40"
+        android:background="@drawable/btn_bg"
+        android:gravity="center"
+        android:text="开始测量"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dm_15" />
 </LinearLayout>

@@ -2,4 +2,8 @@
     <string name="app_name">cdy</string>
     <string name="system_phone">公司地址： \n公司电话： \n公司网址：</string>
     <string name="system_title">        这里可以写一段公司介绍，没就可以删掉新民晚报讯（首席记者 曹刚）上午10时04分，中共中央政治局委员、国务院副总理刘鹤，中共中央政治局委员、上海市委书记李强，上海市市长应勇手握推杆，共同为科创板开板。中国证券监督管理委员会党委书记、主席易会满主持开板仪式。</string>
+
+    <string name="auto_loadmore_loading">加载中…</string>
+    <string name="auto_loadmore_load_finish">所有数据都已加载</string>
+    <string name="auto_loadmore_load_failed">加载失败，请点击我重试。</string>
 </resources>

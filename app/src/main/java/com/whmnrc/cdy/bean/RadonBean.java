@@ -4,10 +4,12 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Transient;
 
+import java.io.Serializable;
 import java.util.Date;
+import org.greenrobot.greendao.annotation.Generated;
 
 @Entity
-public class RadonBean {
+public class RadonBean implements Serializable {
 
     private double radonValue;
 
@@ -24,6 +26,21 @@ public class RadonBean {
 
     @Transient
     private boolean isSelect;
+
+    @Generated(hash = 606333715)
+    public RadonBean(double radonValue, String address, String desc,
+            Date createTime, long id, String name) {
+        this.radonValue = radonValue;
+        this.address = address;
+        this.desc = desc;
+        this.createTime = createTime;
+        this.id = id;
+        this.name = name;
+    }
+
+    @Generated(hash = 1635888606)
+    public RadonBean() {
+    }
 
     public boolean isSelect() {
         return isSelect;
