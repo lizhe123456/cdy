@@ -20,21 +20,30 @@ public class RadonBean implements Serializable {
     private Date createTime;
 
     @Id(autoincrement = true)
-    private long id;
+    private Long id;
 
     private String name;
 
     @Transient
     private boolean isSelect;
 
-    @Generated(hash = 606333715)
-    public RadonBean(double radonValue, String address, String desc,
-            Date createTime, long id, String name) {
+    @Generated(hash = 297786836)
+    public RadonBean(double radonValue, String address, String desc, Date createTime, Long id,
+            String name) {
         this.radonValue = radonValue;
         this.address = address;
         this.desc = desc;
         this.createTime = createTime;
         this.id = id;
+        this.name = name;
+    }
+
+
+    public RadonBean(double radonValue, String address, String desc, Date createTime, String name) {
+        this.radonValue = radonValue;
+        this.address = address;
+        this.desc = desc;
+        this.createTime = createTime;
         this.name = name;
     }
 
@@ -82,11 +91,11 @@ public class RadonBean implements Serializable {
         this.createTime = createTime;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -97,4 +106,5 @@ public class RadonBean implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
 }

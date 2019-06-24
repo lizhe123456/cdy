@@ -2,15 +2,20 @@ package com.whmnrc.cdy.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.whmnrc.cdy.R;
 import com.whmnrc.cdy.base.App;
 import com.whmnrc.cdy.base.BaseActivity;
 import com.whmnrc.cdy.bean.RadonBean;
 import com.whmnrc.cdy.gpio.GPIOConstant;
+import com.whmnrc.cdy.widget.AlertUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -37,7 +42,7 @@ public class DataDetailsActivity extends BaseActivity {
     public static void start(Context context, RadonBean radonBean) {
         Intent starter = new Intent(context, DataDetailsActivity.class);
         starter.putExtra("radonBean",radonBean);
-        context.startActivity(starter);
+        ActivityUtils.startActivity(starter);
     }
 
     @Override
@@ -66,7 +71,12 @@ public class DataDetailsActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.tv_clean:
-                App.getInstance().getDaoSession().getRadonBeanDao().delete(mRadonBean);
+                AlertUtils.showCleanDialog(this, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        App.getInstance().getDaoSession().getRadonBeanDao().delete(mRadonBean);
+                    }
+                });
                 break;
             case R.id.tv_printing:
                 //打印
@@ -74,4 +84,6 @@ public class DataDetailsActivity extends BaseActivity {
                 break;
         }
     }
+
+
 }

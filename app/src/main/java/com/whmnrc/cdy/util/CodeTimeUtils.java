@@ -1,7 +1,9 @@
 package com.whmnrc.cdy.util;
 
 import android.os.CountDownTimer;
+import android.widget.EditText;
 import android.widget.TextView;
+
 
 /**
  * @author yjyvi
@@ -11,52 +13,53 @@ import android.widget.TextView;
 public class CodeTimeUtils {
 
     private static CountDownTimer mCountDownTimer;
-    /**
-     * 订单支付剩余时间
-     */
-    public static long ORDER_PAY_TIME = 1800_000L;
-    public static long resultTime;
 
     /**
-     * 验证码倒计时
+     * 时间倒计时
      */
-    public static void countDown(final TextView textView) {
-        mCountDownTimer = new CountDownTimer(60000, 1000) {
+    public static void countDown(final EditText textView, final long time, final Listener listener) {
+        mCountDownTimer = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 textView.setEnabled(false);
-                textView.setText(String.format("重新发送%ss", millisUntilFinished / 1000));
+                textView.setFocusable(false);
+                textView.setText(TimeUtils.format(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+                textView.setEnabled(true);
+                textView.setFocusable(true);
+                mCountDownTimer.cancel();
+                if (listener != null){
+                    listener.complete();
+                }
+            }
+        };
+        mCountDownTimer.start();
+    }
+
+    //
+    public static void countDown(final TextView textView, final String desc, final long time, final Listener listener) {
+        mCountDownTimer = new CountDownTimer(time, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textView.setEnabled(false);
+                textView.setText(String.format(desc+"\n %s",TimeUtils.format(millisUntilFinished)));
             }
 
             @Override
             public void onFinish() {
                 textView.setEnabled(true);
                 mCountDownTimer.cancel();
+                if (listener != null){
+                    listener.complete();
+                }
             }
         };
         mCountDownTimer.start();
     }
 
-    /**
-     * 验证码倒计时
-     */
-    public static void countDown(final TextView textView, final String text) {
-        mCountDownTimer = new CountDownTimer(60000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                textView.setEnabled(false);
-                textView.setText(String.format(text+"(%ss"+")", millisUntilFinished / 1000));
-            }
-
-            @Override
-            public void onFinish() {
-                textView.setEnabled(true);
-                textView.setText("重新发送");
-                mCountDownTimer.cancel();
-            }
-        };
-        mCountDownTimer.start();
-    }
 
     public static void startTimer() {
         if (mCountDownTimer != null) {
@@ -71,8 +74,8 @@ public class CodeTimeUtils {
         }
     }
 
-    public interface PayOrderTimeListener {
-        void payField();
+    public interface Listener {
+        void complete();
     }
 
 

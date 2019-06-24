@@ -19,6 +19,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.blankj.utilcode.util.ActivityUtils;
 import com.whmnrc.cdy.R;
 import com.whmnrc.cdy.base.BaseActivity;
 import com.whmnrc.cdy.bean.RadonBean;
@@ -33,6 +35,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 输出
+ */
 public class QueryActivity extends BaseActivity {
 
 
@@ -41,7 +46,7 @@ public class QueryActivity extends BaseActivity {
     @BindView(R.id.rv_list)
     RecyclerView rvList;
     private RadonBeanAdapter mRadonBeanAdapter;
-    private int page = 1;
+    private int page = 0;
     private AlertDialog alertDialog;
 
 
@@ -72,7 +77,7 @@ public class QueryActivity extends BaseActivity {
 
     public static void start(Context context) {
         Intent starter = new Intent(context, QueryActivity.class);
-        context.startActivity(starter);
+        ActivityUtils.startActivity(starter);
     }
 
     @Override

@@ -28,7 +28,7 @@
             android:layout_marginTop="@dimen/dm_26"
             android:text="@string/system_phone"
             android:textColor="@color/tv_25292F"
-            android:textSize="@dimen/dm_12" />
+            android:textSize="@dimen/sp_14" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:layout_margin="@dimen/dm_15"
             android:text="@string/system_title"
             android:textColor="@color/tv_666"
-            android:textSize="@dimen/dm_10" />
+            android:textSize="@dimen/sp_12" />
 
         <View
             android:layout_width="match_parent"
@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/dm_16"
             android:text="设置初始时间"
             android:textColor="@color/tv_25292F"
-            android:textSize="@dimen/dm_14" />
+            android:textSize="@dimen/sp_15" />
 
         <TextView
             android:id="@+id/tv_date"
@@ -82,7 +82,7 @@
             android:gravity="center"
             android:text="设置时间"
             android:textColor="@color/white"
-            android:textSize="@dimen/dm_15" />
+            android:textSize="@dimen/sp_15" />
     </LinearLayout>
 
 </LinearLayout>

@@ -71,10 +71,10 @@ public class HomeFragment extends BaseFragment {
                         CleanActivity.start(getContext());
                         break;
                     case "查询":
-                        QueryActivity.start(getContext());
+                        OutputActivity.start(getContext());
                         break;
                     case "输出":
-                        OutputActivity.start(getContext());
+                        QueryActivity.start(getContext());
                         break;
                     case "系统":
                         SystemActivity.start(getContext());
