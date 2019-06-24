@@ -44,7 +44,7 @@
             android:gravity="bottom"
             android:lines="1"
             android:textColor="@color/tv_25292F"
-            android:textSize="@dimen/dm_16"
+            android:textSize="@dimen/dm_17"
             />
 
 

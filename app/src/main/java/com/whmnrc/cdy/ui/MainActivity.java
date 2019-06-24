@@ -16,8 +16,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initViewData() {
         FragmentUtils.add(getSupportFragmentManager(),HomeFragment.newInstance(),R.id.fl_content);
-
     }
+
+
 
 
 }

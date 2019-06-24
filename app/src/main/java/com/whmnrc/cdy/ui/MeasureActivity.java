@@ -20,8 +20,6 @@ public class MeasureActivity extends BaseActivity {
     TextView tvName;
     @BindView(R.id.tv_mf_time)
     EditText tvMfTime;
-    @BindView(R.id.ll_la1)
-    View llLa1;
     @BindView(R.id.tv_cq_time)
     EditText tvCqTime;
     @BindView(R.id.ll_la2)
@@ -56,7 +54,18 @@ public class MeasureActivity extends BaseActivity {
     EditText tvBg;
     @BindView(R.id.ll_la7)
     LinearLayout llLa7;
+    @BindView(R.id.ll_config)
+    LinearLayout llConfig;
+    @BindView(R.id.ll_measure)
+    LinearLayout llMeasure;
+    @BindView(R.id.ll_la1)
+    LinearLayout llLa1;
+    @BindView(R.id.v_d1)
+    View vD1;
+
     private MeasureType mMeasureType;
+
+    private boolean isMeasure;
 
     public static void start(Context context, MeasureType measureType) {
         Intent starter = new Intent(context, MeasureActivity.class);
@@ -71,41 +80,121 @@ public class MeasureActivity extends BaseActivity {
 
     @Override
     protected void initViewData() {
+        tvTitle.setText("测量参数设置");
         mMeasureType = (MeasureType) getIntent().getSerializableExtra("measureType");
 
         initUi();
     }
 
     private void initUi() {
-        switch (mMeasureType){
+        switch (mMeasureType) {
             case AIR:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.VISIBLE);
+                llLa5.setVisibility(View.GONE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
+
+                vD1.setVisibility(View.GONE);
+                vD2.setVisibility(View.VISIBLE);
+                vD3.setVisibility(View.VISIBLE);
+                vD4.setVisibility(View.GONE);
+                vD5.setVisibility(View.VISIBLE);
+                vD6.setVisibility(View.VISIBLE);
 
                 break;
             case SOIL:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.GONE);
+                llLa5.setVisibility(View.VISIBLE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
 
+                vD1.setVisibility(View.GONE);
+                vD2.setVisibility(View.VISIBLE);
+                vD3.setVisibility(View.VISIBLE);
+                vD4.setVisibility(View.GONE);
+                vD5.setVisibility(View.VISIBLE);
+                vD6.setVisibility(View.VISIBLE);
                 break;
             case WATER:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.VISIBLE);
+                llLa5.setVisibility(View.GONE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
 
+                vD1.setVisibility(View.GONE);
+                vD2.setVisibility(View.VISIBLE);
+                vD3.setVisibility(View.VISIBLE);
+                vD4.setVisibility(View.GONE);
+                vD5.setVisibility(View.VISIBLE);
+                vD6.setVisibility(View.VISIBLE);
                 break;
             case BACKGROUND:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.GONE);
+                llLa3.setVisibility(View.GONE);
+                llLa4.setVisibility(View.VISIBLE);
+                llLa5.setVisibility(View.GONE);
+                llLa6.setVisibility(View.GONE);
+                llLa7.setVisibility(View.GONE);
 
+                vD1.setVisibility(View.GONE);
+                vD2.setVisibility(View.GONE);
+                vD3.setVisibility(View.GONE);
+                vD4.setVisibility(View.GONE);
+                vD5.setVisibility(View.GONE);
+                vD6.setVisibility(View.GONE);
                 break;
             case RADON_EXHALATION_RATE:
+                llLa1.setVisibility(View.VISIBLE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.VISIBLE);
+                llLa5.setVisibility(View.GONE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
 
+                vD1.setVisibility(View.VISIBLE);
+                vD2.setVisibility(View.VISIBLE);
+                vD3.setVisibility(View.VISIBLE);
+                vD4.setVisibility(View.VISIBLE);
+                vD5.setVisibility(View.GONE);
+                vD6.setVisibility(View.VISIBLE);
                 break;
             case CONTINUOUS_MEASUREMENT:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.GONE);
+                llLa5.setVisibility(View.VISIBLE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
 
+                vD1.setVisibility(View.GONE);
+                vD2.setVisibility(View.VISIBLE);
+                vD3.setVisibility(View.VISIBLE);
+                vD4.setVisibility(View.GONE);
+                vD5.setVisibility(View.VISIBLE);
+                vD6.setVisibility(View.VISIBLE);
                 break;
         }
 
     }
 
 
-
     @OnClick({R.id.iv_back, R.id.tv_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                this.finish();
                 break;
             case R.id.tv_confirm:
                 inputVerification();
@@ -114,9 +203,69 @@ public class MeasureActivity extends BaseActivity {
     }
 
     private void inputVerification() {
-        switch (mMeasureType){
+        switch (mMeasureType) {
+            case AIR:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.VISIBLE);
+                llLa5.setVisibility(View.GONE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
 
+                break;
+            case SOIL:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.GONE);
+                llLa5.setVisibility(View.VISIBLE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
+                break;
+            case WATER:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.VISIBLE);
+                llLa5.setVisibility(View.GONE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
+                break;
+            case BACKGROUND:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.GONE);
+                llLa3.setVisibility(View.GONE);
+                llLa4.setVisibility(View.VISIBLE);
+                llLa5.setVisibility(View.GONE);
+                llLa6.setVisibility(View.GONE);
+                llLa7.setVisibility(View.GONE);
+                break;
+            case RADON_EXHALATION_RATE:
+                llLa1.setVisibility(View.VISIBLE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.VISIBLE);
+                llLa5.setVisibility(View.GONE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
+                break;
+            case CONTINUOUS_MEASUREMENT:
+                llLa1.setVisibility(View.GONE);
+                llLa2.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.GONE);
+                llLa5.setVisibility(View.VISIBLE);
+                llLa6.setVisibility(View.VISIBLE);
+                llLa7.setVisibility(View.VISIBLE);
+                break;
         }
 
+        isMeasure = true;
+        llConfig.setVisibility(View.GONE);
+        llMeasure.setVisibility(View.VISIBLE);
+
+
     }
+
 }

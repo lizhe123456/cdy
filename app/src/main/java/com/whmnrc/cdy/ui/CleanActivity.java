@@ -2,16 +2,12 @@ package com.whmnrc.cdy.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.whmnrc.cdy.R;
 import com.whmnrc.cdy.base.BaseActivity;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CleanActivity extends BaseActivity {
@@ -34,6 +30,9 @@ public class CleanActivity extends BaseActivity {
     @Override
     protected void initViewData() {
 
+        tvTitle.setText("清洗");
+
+
     }
 
 
@@ -41,8 +40,10 @@ public class CleanActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                this.finish();
                 break;
             case R.id.tv_confirm:
+
                 break;
         }
     }

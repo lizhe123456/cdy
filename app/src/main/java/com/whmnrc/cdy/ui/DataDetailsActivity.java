@@ -33,6 +33,7 @@ public class DataDetailsActivity extends BaseActivity {
 
     private RadonBean mRadonBean;
 
+
     public static void start(Context context, RadonBean radonBean) {
         Intent starter = new Intent(context, DataDetailsActivity.class);
         starter.putExtra("radonBean",radonBean);

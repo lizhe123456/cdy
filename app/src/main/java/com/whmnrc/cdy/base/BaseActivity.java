@@ -1,12 +1,15 @@
 package com.whmnrc.cdy.base;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.blankj.utilcode.util.ActivityUtils;
 
@@ -27,8 +30,15 @@ public abstract class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         mActivity = this;
         mView = LayoutInflater.from(this).inflate(setLayoutId(), null);
+        //无title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //全屏
+        getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                WindowManager.LayoutParams. FLAG_FULLSCREEN);
         setContentView(mView);
         mUnbinder = ButterKnife.bind(mActivity);
+        setSUp();
+        hidpN();
         initViewData();
         ActivityUtils.getActivityList().add(mActivity);
     }
@@ -59,5 +69,18 @@ public abstract class BaseActivity extends FragmentActivity {
     }
 
 
+    private void setSUp(){
+        Intent intent=new Intent();
+        intent.setAction("ACTION_STATUSBAR_DROPDOWN");
+        intent.putExtra("cmd","hide");
+        sendBroadcast(intent,null);
+    }
+
+    private void hidpN(){
+        Intent intent=new Intent();
+        intent.setAction("ACTION_SHOW_NAVBAR");
+        intent.putExtra("cmd","hide");
+        sendBroadcast(intent,null);
+    }
 
 }
