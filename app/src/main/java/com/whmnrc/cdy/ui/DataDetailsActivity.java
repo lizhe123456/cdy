@@ -42,7 +42,7 @@ public class DataDetailsActivity extends BaseActivity {
     public static void start(Context context, RadonBean radonBean) {
         Intent starter = new Intent(context, DataDetailsActivity.class);
         starter.putExtra("radonBean",radonBean);
-        ActivityUtils.startActivity(starter);
+        ActivityUtils.startActivity(starter,0,0);
     }
 
     @Override

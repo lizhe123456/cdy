@@ -77,7 +77,7 @@ public class QueryActivity extends BaseActivity {
 
     public static void start(Context context) {
         Intent starter = new Intent(context, QueryActivity.class);
-        ActivityUtils.startActivity(starter);
+        ActivityUtils.startActivity(starter,0,0);
     }
 
     @Override

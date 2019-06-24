@@ -17,15 +17,15 @@ import com.whmnrc.cdy.bean.MeasureConfig;
 import com.whmnrc.cdy.gpio.GPIOConstant;
 import com.whmnrc.cdy.gpio.GPIOSender;
 import com.whmnrc.cdy.gpio.MeasureType;
-import com.whmnrc.cdy.queue.Ceased;
-import com.whmnrc.cdy.queue.Doable;
-import com.whmnrc.cdy.queue.TQueue;
 import com.whmnrc.cdy.util.CodeTimeUtils;
 import com.whmnrc.cdy.util.ToastUtil;
 import com.whmnrc.cdy.widget.AlertUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kr.pe.burt.android.lib.androidoperationqueue.AndroidOperation;
+import kr.pe.burt.android.lib.androidoperationqueue.AndroidOperationQueue;
+import kr.pe.burt.android.lib.androidoperationqueue.Operation;
 
 public class MeasureActivity extends BaseActivity {
 
@@ -85,11 +85,12 @@ public class MeasureActivity extends BaseActivity {
     private boolean isMeasure;
 
     private MeasureConfig mMeasureConfig;
+    private AndroidOperationQueue mAndroidOperationQueue = new AndroidOperationQueue("Measure");
 
     public static void start(Context context, MeasureType measureType) {
         Intent starter = new Intent(context, MeasureActivity.class);
         starter.putExtra("measureType", measureType);
-        ActivityUtils.startActivity(starter);
+        ActivityUtils.startActivity(starter,0,0);
     }
 
     @Override
@@ -159,8 +160,8 @@ public class MeasureActivity extends BaseActivity {
             case BACKGROUND:
                 llLa1.setVisibility(View.GONE);
                 llLa2.setVisibility(View.GONE);
-                llLa3.setVisibility(View.GONE);
-                llLa4.setVisibility(View.VISIBLE);
+                llLa3.setVisibility(View.VISIBLE);
+                llLa4.setVisibility(View.GONE);
                 llLa5.setVisibility(View.GONE);
                 llLa6.setVisibility(View.GONE);
                 llLa7.setVisibility(View.GONE);
@@ -234,8 +235,8 @@ public class MeasureActivity extends BaseActivity {
     }
 
     private void stopMeasure() {
-        TQueue.queue().release();
         CodeTimeUtils.cancelTimer();
+        mAndroidOperationQueue.stop();
     }
 
     private void startMeasure() {
@@ -244,48 +245,119 @@ public class MeasureActivity extends BaseActivity {
         llMeasure.setVisibility(View.VISIBLE);
 
         if (mMeasureConfig.getMeasureType() == MeasureType.AIR) {
-            TQueue.queue("s")
-                    .onUI(new Doable() {
-                        @Override
-                        public void doing(TQueue queue, Bundle args) {
-                            implementC2(getSS(mMeasureConfig.getC2()));
-                        }
-                    })
-                    .onUIDelayed(getSS(mMeasureConfig.getC2()), new Doable() {
-                        @Override
-                        public void doing(TQueue queue, Bundle args) {
-                            implementC3(getSS(mMeasureConfig.getC3()));
-                        }
-                    }).rest(getSS(mMeasureConfig.getC3()))
-                    .onUI(new Doable() {
-                        @Override
-                        public void doing(TQueue queue, Bundle args) {
-                            implementP4(getSS(mMeasureConfig.getP4()));
-                        }
-                    }).rest(getSS(mMeasureConfig.getP4()))
-                    .onUI(new Doable() {
-                        @Override
-                        public void doing(TQueue queue, Bundle args) {
-                            //测量完成，开始计算
-                            mTvMeasureTime.setText("测试完成");
 
-                        }
-                    })
-                    .go(new Ceased() {
+            mAndroidOperationQueue.addOperation(new Operation() {
+                @Override
+                public void run(AndroidOperationQueue queue, Bundle bundle) {
+                    AndroidOperation.runOnUiThread(new Runnable() {
                         @Override
-                        public void doing(Throwable error, Bundle args) {
-                            //执行出错
-                            if (mTvMeasureTime != null) {
-                                mTvMeasureTime.setText("执行出错");
-                            }
+                        public void run() {
+                            implementC2(getSS(mMeasureConfig.getC2()), new CodeTimeUtils.Listener() {
+                                @Override
+                                public void complete() {
+                                    mAndroidOperationQueue.addOperation(new Operation() {
+                                        @Override
+                                        public void run(AndroidOperationQueue queue, Bundle bundle) {
+                                            AndroidOperation.runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    implementC3(getSS(mMeasureConfig.getC3()), new CodeTimeUtils.Listener() {
+                                                        @Override
+                                                        public void complete() {
+                                                            mAndroidOperationQueue.addOperation(new Operation() {
+                                                                @Override
+                                                                public void run(AndroidOperationQueue queue, Bundle bundle) {
+                                                                    AndroidOperation.runOnUiThread(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            implementP4(getSS(mMeasureConfig.getP4()), new CodeTimeUtils.Listener() {
+                                                                                @Override
+                                                                                public void complete() {
+                                                                                    mAndroidOperationQueue.addOperation(new Operation() {
+                                                                                        @Override
+                                                                                        public void run(AndroidOperationQueue queue, Bundle bundle) {
+                                                                                            //测量完成，开始计算
+                                                                                            AndroidOperation.runOnUiThread(new Runnable() {
+                                                                                                @Override
+                                                                                                public void run() {
+                                                                                                    mTvMeasureTime.setText("测试完成");
+                                                                                                }
+
+                                                                                            });
+
+                                                                                        }
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+
+                                            });
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
+                }
+            });
+
+
+
+
+
+
+
+            mAndroidOperationQueue.start();
+
+//            TQueue.queue("s")
+//                    .onUI(new Doable() {
+//                        @Override
+//                        public void doing(TQueue queue, Bundle args) {
+//
+//                        }
+//                    })
+//                    .onUIDelayed(getSS(mMeasureConfig.getC2()), new Doable() {
+//                        @Override
+//                        public void doing(TQueue queue, Bundle args) {
+//                            implementC3(getSS(mMeasureConfig.getC3()));
+//                        }
+//                    }).rest(getSS(mMeasureConfig.getC3()))
+//                    .onUI(new Doable() {
+//                        @Override
+//                        public void doing(TQueue queue, Bundle args) {
+//                            implementP4(getSS(mMeasureConfig.getP4()));
+//                        }
+//                    }).rest(getSS(mMeasureConfig.getP4()))
+//                    .onUI(new Doable() {
+//                        @Override
+//                        public void doing(TQueue queue, Bundle args) {
+//                            //测量完成，开始计算
+//                            mTvMeasureTime.setText("测试完成");
+//
+//                        }
+//                    })
+//                    .go(new Ceased() {
+//                        @Override
+//                        public void doing(Throwable error, Bundle args) {
+//                            //执行出错
+//                            if (mTvMeasureTime != null) {
+//                                mTvMeasureTime.setText("执行出错");
+//                            }
+//                        }
+//                    });
         }
 
 
     }
 
-    private long getSS(long mm){
+    private long getSS(long mm) {
         return mm * 60 * 1000;
     }
 
@@ -295,34 +367,43 @@ public class MeasureActivity extends BaseActivity {
     }
 
     //执行抽气任务
-    private void implementC2(long time) {
+    private void implementC2(long time, final CodeTimeUtils.Listener listener) {
         GPIOSender.write(GPIOConstant.PG0, GPIOConstant.GPIO_VALUE_HIGH);
         CodeTimeUtils.countDown(mTvMeasureTime, "抽气中..", time, new CodeTimeUtils.Listener() {
             @Override
             public void complete() {
                 GPIOSender.write(GPIOConstant.PG0, GPIOConstant.GPIO_VALUE_LOW);
+                if (listener != null){
+                    listener.complete();
+                }
             }
         });
     }
 
     //执行测量任务
-    private void implementC3(long time) {
+    private void implementC3(long time, final CodeTimeUtils.Listener listener) {
         GPIOSender.write(GPIOConstant.PG1, GPIOConstant.GPIO_VALUE_HIGH);
         CodeTimeUtils.countDown(mTvMeasureTime, "测量中..", time, new CodeTimeUtils.Listener() {
             @Override
             public void complete() {
                 GPIOSender.write(GPIOConstant.PG1, GPIOConstant.GPIO_VALUE_LOW);
+                if (listener != null){
+                    listener.complete();
+                }
             }
         });
     }
 
     //执行排气任务
-    private void implementP4(long time) {
+    private void implementP4(long time,final CodeTimeUtils.Listener listener) {
         GPIOSender.write(GPIOConstant.PG0, GPIOConstant.GPIO_VALUE_HIGH);
         CodeTimeUtils.countDown(mTvMeasureTime, "排气中..", time, new CodeTimeUtils.Listener() {
             @Override
             public void complete() {
                 GPIOSender.write(GPIOConstant.PG0, GPIOConstant.GPIO_VALUE_LOW);
+                if (listener != null){
+                    listener.complete();
+                }
             }
         });
     }

@@ -83,4 +83,9 @@ public abstract class BaseActivity extends FragmentActivity {
         sendBroadcast(intent,null);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+    }
 }
