@@ -1,5 +1,7 @@
 package com.whmnrc.cdy.ui;
 
+import android.app.ProgressDialog;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,12 +12,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.example.lpc.bluetoothsdk.BluetoothSdkManager;
+import com.example.lpc.bluetoothsdk.listener.DiscoveryDevicesListener;
 import com.whmnrc.cdy.R;
 import com.whmnrc.cdy.base.App;
 import com.whmnrc.cdy.base.BaseActivity;
 import com.whmnrc.cdy.bean.RadonBean;
 import com.whmnrc.cdy.ui.adapter.RadonBeanAdapter;
 import com.whmnrc.cdy.util.RadonPageUtils;
+import com.whmnrc.cdy.util.ToastUtil;
 import com.whmnrc.cdy.widget.AlertUtils;
 
 import java.util.Date;
@@ -37,10 +42,19 @@ public class OutputActivity extends BaseActivity {
     private int page = 0;
 
 
+    private BluetoothSdkManager mBluetoothSdkManager;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, OutputActivity.class);
         ActivityUtils.startActivity(starter,0,0);
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
 
     @Override
     protected int setLayoutId() {
@@ -53,7 +67,7 @@ public class OutputActivity extends BaseActivity {
         mRadonBeanAdapter = new RadonBeanAdapter(this);
         rvList.setLayoutManager(new LinearLayoutManager(this));
         rvList.setAdapter(mRadonBeanAdapter);
-
+        mBluetoothSdkManager = new BluetoothSdkManager(this);
 
         rvList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -103,9 +117,35 @@ public class OutputActivity extends BaseActivity {
                 break;
             case R.id.tv_printing:
                 //打印
-                RadonBean radonBean = new RadonBean(38.6,"湖北武汉","我的测试",new Date(),"我的任务");
-                App.getInstance().getDaoSession().getRadonBeanDao().insert(radonBean);
+//                RadonBean radonBean = new RadonBean(38.6,"湖北武汉","我的测试",new Date(),"我的任务");
+//                App.getInstance().getDaoSession().getRadonBeanDao().insert(radonBean);
+                startPrinting();
+
                 break;
+        }
+    }
+
+    private void startPrinting() {
+        if (!mBluetoothSdkManager.isBluetoothSupported()){
+            ToastUtil.showToast(this,"设备不支持蓝牙");
+        }else {
+            showProgress("搜索中..");
+            mBluetoothSdkManager.setDiscoveryDeviceListener(new DiscoveryDevicesListener() {
+                @Override
+                public void startDiscovery() {
+
+                }
+
+                @Override
+                public void discoveryNew(BluetoothDevice bluetoothDevice) {
+
+                }
+
+                @Override
+                public void discoveryFinish(List<BluetoothDevice> list) {
+                    hodeProgress();
+                }
+            });
         }
     }
 }

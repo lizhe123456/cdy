@@ -3,32 +3,30 @@ package com.whmnrc.cdy.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
+import com.kongqw.serialportlibrary.listener.OnSerialPortDataListener;
 import com.whmnrc.cdy.R;
 import com.whmnrc.cdy.base.BaseActivity;
 import com.whmnrc.cdy.bean.MeasureConfig;
-import com.whmnrc.cdy.gpio.GPIOConstant;
-import com.whmnrc.cdy.gpio.GPIOSender;
 import com.whmnrc.cdy.gpio.MeasureType;
+import com.whmnrc.cdy.serialport.SerialPortConstant;
 import com.whmnrc.cdy.util.AndroidBug5497Workaround;
 import com.whmnrc.cdy.util.CodeTimeUtils;
+import com.whmnrc.cdy.util.SerialUtil;
 import com.whmnrc.cdy.util.ToastUtil;
 import com.whmnrc.cdy.widget.AlertUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import kr.pe.burt.android.lib.androidoperationqueue.AndroidOperation;
-import kr.pe.burt.android.lib.androidoperationqueue.AndroidOperationQueue;
-import kr.pe.burt.android.lib.androidoperationqueue.Operation;
 
-public class MeasureActivity extends BaseActivity {
+public class MeasureActivity extends BaseActivity implements OnSerialPortDataListener {
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -86,7 +84,8 @@ public class MeasureActivity extends BaseActivity {
     private boolean isMeasure;
 
     private MeasureConfig mMeasureConfig;
-    private AndroidOperationQueue mAndroidOperationQueue = new AndroidOperationQueue("Measure");
+//    private AndroidOperationQueue mAndroidOperationQueue = new AndroidOperationQueue("Measure");
+    private MeasurePlug measurePlug;
 
     public static void start(Context context, MeasureType measureType) {
         Intent starter = new Intent(context, MeasureActivity.class);
@@ -106,6 +105,9 @@ public class MeasureActivity extends BaseActivity {
         mMeasureType = (MeasureType) getIntent().getSerializableExtra("measureType");
         mMeasureConfig = new MeasureConfig(mMeasureType);
         initUi();
+        SerialUtil.getInstance().setListener(this);
+        SerialUtil.getInstance().connect("ttyS1");
+        measurePlug = new MeasurePlug(mTvMeasureTime);
     }
 
     private void initUi() {
@@ -245,184 +247,55 @@ public class MeasureActivity extends BaseActivity {
     }
 
     private void stopMeasure() {
-        CodeTimeUtils.cancelTimer();
-        mAndroidOperationQueue.stop();
+        measurePlug.stopMeasure();
+//        mAndroidOperationQueue.stop();
     }
 
     private void startMeasure() {
+        KeyboardUtils.hideSoftInput(this);
         isMeasure = true;
         llConfig.setVisibility(View.GONE);
         llMeasure.setVisibility(View.VISIBLE);
 
-        if (mMeasureConfig.getMeasureType() == MeasureType.AIR) {
-
-            mAndroidOperationQueue.addOperation(new Operation() {
+        if (mMeasureConfig.getMeasureType() == MeasureType.AIR ||
+                mMeasureConfig.getMeasureType() == MeasureType.SOIL ||
+                mMeasureConfig.getMeasureType() == MeasureType.WATER) {
+            measurePlug.ordinaryMeasure(mMeasureConfig, new MeasurePlug.OnMeasureListener() {
                 @Override
-                public void run(AndroidOperationQueue queue, Bundle bundle) {
-                    AndroidOperation.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            implementC2(getSS(mMeasureConfig.getC2()), new CodeTimeUtils.Listener() {
-                                @Override
-                                public void complete() {
-                                    mAndroidOperationQueue.addOperation(new Operation() {
-                                        @Override
-                                        public void run(AndroidOperationQueue queue, Bundle bundle) {
-                                            AndroidOperation.runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    implementC3(getSS(mMeasureConfig.getC3()), new CodeTimeUtils.Listener() {
-                                                        @Override
-                                                        public void complete() {
-                                                            mAndroidOperationQueue.addOperation(new Operation() {
-                                                                @Override
-                                                                public void run(AndroidOperationQueue queue, Bundle bundle) {
-                                                                    AndroidOperation.runOnUiThread(new Runnable() {
-                                                                        @Override
-                                                                        public void run() {
-                                                                            implementP4(getSS(mMeasureConfig.getP4()), new CodeTimeUtils.Listener() {
-                                                                                @Override
-                                                                                public void complete() {
-                                                                                    mAndroidOperationQueue.addOperation(new Operation() {
-                                                                                        @Override
-                                                                                        public void run(AndroidOperationQueue queue, Bundle bundle) {
-                                                                                            //测量完成，开始计算
-                                                                                            AndroidOperation.runOnUiThread(new Runnable() {
-                                                                                                @Override
-                                                                                                public void run() {
-                                                                                                    mTvMeasureTime.setText("测试完成");
-                                                                                                }
+                public void complete() {
 
-                                                                                            });
+                }
 
-                                                                                        }
-                                                                                    });
-                                                                                }
-                                                                            });
-                                                                        }
+                @Override
+                public void error() {
 
-                                                                    });
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                }
-
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
                 }
             });
 
+        }else if (mMeasureConfig.getMeasureType() == MeasureType.RADON_EXHALATION_RATE){
+            measurePlug.miOrdinaryMeasure(mMeasureConfig, new MeasurePlug.OnMeasureListener() {
+                @Override
+                public void complete() {
 
-            mAndroidOperationQueue.start();
+                }
 
-//            TQueue.queue("s")
-//                    .onUI(new Doable() {
-//                        @Override
-//                        public void doing(TQueue queue, Bundle args) {
-//
-//                        }
-//                    })
-//                    .onUIDelayed(getSS(mMeasureConfig.getC2()), new Doable() {
-//                        @Override
-//                        public void doing(TQueue queue, Bundle args) {
-//                            implementC3(getSS(mMeasureConfig.getC3()));
-//                        }
-//                    }).rest(getSS(mMeasureConfig.getC3()))
-//                    .onUI(new Doable() {
-//                        @Override
-//                        public void doing(TQueue queue, Bundle args) {
-//                            implementP4(getSS(mMeasureConfig.getP4()));
-//                        }
-//                    }).rest(getSS(mMeasureConfig.getP4()))
-//                    .onUI(new Doable() {
-//                        @Override
-//                        public void doing(TQueue queue, Bundle args) {
-//                            //测量完成，开始计算
-//                            mTvMeasureTime.setText("测试完成");
-//
-//                        }
-//                    })
-//                    .go(new Ceased() {
-//                        @Override
-//                        public void doing(Throwable error, Bundle args) {
-//                            //执行出错
-//                            if (mTvMeasureTime != null) {
-//                                mTvMeasureTime.setText("执行出错");
-//                            }
-//                        }
-//                    });
+                @Override
+                public void error() {
+
+                }
+            });
+
+        }else if (mMeasureConfig.getMeasureType() == MeasureType.BACKGROUND){
+            measurePlug.implementBackground(mMeasureConfig.getC3(), new CodeTimeUtils.Listener() {
+                @Override
+                public void complete() {
+
+                }
+            });
+
+        }else if (mMeasureConfig.getMeasureType() == MeasureType.CONTINUOUS_MEASUREMENT){
+            measurePlug.implementContinuity(mMeasureConfig.getJ5(),mMeasureConfig);
         }
-
-
-    }
-
-    private long getSS(long mm) {
-        return mm * 60 * 1000;
-    }
-
-    //执行密封任务
-    private void implementM1(long time) {
-
-    }
-
-    //执行抽气任务
-    private void implementC2(long time, final CodeTimeUtils.Listener listener) {
-        GPIOSender.write(GPIOConstant.PG0, GPIOConstant.GPIO_VALUE_HIGH);
-        CodeTimeUtils.countDown(mTvMeasureTime, "抽气中..", time, new CodeTimeUtils.Listener() {
-            @Override
-            public void complete() {
-                GPIOSender.write(GPIOConstant.PG0, GPIOConstant.GPIO_VALUE_LOW);
-                if (listener != null){
-                    listener.complete();
-                }
-            }
-        });
-    }
-
-    //执行测量任务
-    private void implementC3(long time, final CodeTimeUtils.Listener listener) {
-        GPIOSender.write(GPIOConstant.PG1, GPIOConstant.GPIO_VALUE_HIGH);
-        CodeTimeUtils.countDown(mTvMeasureTime, "测量中..", time, new CodeTimeUtils.Listener() {
-            @Override
-            public void complete() {
-                GPIOSender.write(GPIOConstant.PG1, GPIOConstant.GPIO_VALUE_LOW);
-                if (listener != null){
-                    listener.complete();
-                }
-            }
-        });
-    }
-
-    //执行排气任务
-    private void implementP4(long time,final CodeTimeUtils.Listener listener) {
-        GPIOSender.write(GPIOConstant.PG0, GPIOConstant.GPIO_VALUE_HIGH);
-        CodeTimeUtils.countDown(mTvMeasureTime, "排气中..", time, new CodeTimeUtils.Listener() {
-            @Override
-            public void complete() {
-                GPIOSender.write(GPIOConstant.PG0, GPIOConstant.GPIO_VALUE_LOW);
-                if (listener != null){
-                    listener.complete();
-                }
-            }
-        });
-    }
-
-    //执行连续任务
-    private void implementContinuity() {
-
-//        implementC2();
-//        implementC3();
-    }
-
-    //执行本底任务
-    private void implementBackground(long time) {
-
     }
 
 
@@ -616,4 +489,31 @@ public class MeasureActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onDataReceived(byte[] bytes) {
+        if (bytes.length > 0) {
+          if (bytes.length == 1) {
+                //正确应答格式
+
+            } else if (bytes[0] == SerialPortConstant.SOH) {
+                //正确数据包格式
+                if (bytes.length > 2){
+                    if (bytes[1] == SerialPortConstant.CMD_W){
+                        byte[] data = new byte[bytes.length - 4];
+                        System.arraycopy(bytes,2,data,0,data.length);
+                        Log.e("读取",data.length+"");
+                    }else if (bytes[1] == SerialPortConstant.CMD_R){
+
+                    }
+                }
+
+            }
+        }
+        Log.d("sop","收到了数据。");
+    }
+
+    @Override
+    public void onDataSent(byte[] bytes) {
+        Log.d("sop","发送了数据。");
+    }
 }

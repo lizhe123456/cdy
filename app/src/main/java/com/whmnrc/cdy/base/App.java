@@ -2,7 +2,11 @@ package com.whmnrc.cdy.base;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.birbit.android.jobqueue.JobManager;
+import com.birbit.android.jobqueue.config.Configuration;
+import com.birbit.android.jobqueue.log.CustomLogger;
 import com.blankj.utilcode.util.Utils;
 import com.squareup.leakcanary.LeakCanary;
 import com.whmnrc.cdy.db.DaoMaster;
@@ -18,12 +22,17 @@ public class App extends Application {
     private SQLiteDatabase db;
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
+    private JobManager jobManager;
 
     public synchronized static App getInstance() {
         if (instance == null) {
             return new App();
         }
         return instance;
+    }
+
+    public JobManager getJobManager() {
+        return jobManager;
     }
 
     @Override
@@ -38,6 +47,7 @@ public class App extends Application {
         instance = this;
         Utils.init(this);
         setDatabase();
+        configureJobManager();
     }
 
     private void setDatabase() {
@@ -51,6 +61,52 @@ public class App extends Application {
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();
     }
+
+    /**
+     * 配置JobMananger
+     */
+    private void configureJobManager() {
+        Configuration configuration = new Configuration.Builder(this)
+                //日志设置，便于用户查看任务队列的工作信息
+                .customLogger(new CustomLogger() {
+                    @Override
+                    public boolean isDebugEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void d(String text, Object... args) {
+                        Log.d("cdy", String.format(text, args));
+                    }
+
+                    @Override
+                    public void e(Throwable t, String text, Object... args) {
+                        Log.e("cdy", String.format(text, args));
+                    }
+
+                    @Override
+                    public void e(String text, Object... args) {
+                        Log.e("cdy", String.format(text, args));
+                    }
+
+                    @Override
+                    public void v(String text, Object... args) {
+                        Log.v("cdy", String.format(text, args));
+                    }
+                })
+                //最少开启的线程
+                .minConsumerCount(3)
+                //最多开启的线程
+                .maxConsumerCount(3)
+                //一个Thread设置多3个任务
+                .loadFactor(3)
+                //设置线程在没有任务的情况下保持存活的时长，以秒为单位
+                .consumerKeepAlive(120)
+                .build();
+
+        jobManager = new JobManager(configuration);
+    }
+
 
     public DaoSession getDaoSession() {
         return mDaoSession;

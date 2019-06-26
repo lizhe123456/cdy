@@ -7,6 +7,10 @@ public class SerialPortConstant {
     public static final byte SOH = 0x01;
     public static final byte CAN = 0x18;
 
+
+    public static final byte CMD_R = 0x02;
+    public static final byte CMD_W = 0x03;
+
     //气泵开关
     public static final byte PUMP_OPEN = 0x21;
     public static final byte PUMP_CLOSE = 0x22;

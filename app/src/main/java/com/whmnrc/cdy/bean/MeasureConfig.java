@@ -39,7 +39,7 @@ public class MeasureConfig {
     }
 
     public void setM1(long m1) {
-        this.m1 = m1;
+        this.m1 = getSS(m1);
     }
 
     public long getC2() {
@@ -47,7 +47,7 @@ public class MeasureConfig {
     }
 
     public void setC2(long c2) {
-        this.c2 = c2;
+        this.c2 = getSS(c2);
     }
 
     public long getC3() {
@@ -55,7 +55,7 @@ public class MeasureConfig {
     }
 
     public void setC3(long c3) {
-        this.c3 = c3;
+        this.c3 = getSS(c3);
     }
 
     public long getP4() {
@@ -63,7 +63,7 @@ public class MeasureConfig {
     }
 
     public void setP4(long p4) {
-        this.p4 = p4;
+        this.p4 = getSS(p4);
     }
 
     public long getJ5() {
@@ -71,7 +71,7 @@ public class MeasureConfig {
     }
 
     public void setJ5(long j5) {
-        this.j5 = j5;
+        this.j5 = getSS(j5);
     }
 
     public double getX6() {
@@ -96,5 +96,9 @@ public class MeasureConfig {
 
     public void setMeasureType(MeasureType measureType) {
         this.measureType = measureType;
+    }
+
+    private long getSS(long mm) {
+        return mm * 60 * 1000;
     }
 }
