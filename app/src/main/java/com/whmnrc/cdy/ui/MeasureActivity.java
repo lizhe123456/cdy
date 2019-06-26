@@ -17,6 +17,7 @@ import com.whmnrc.cdy.bean.MeasureConfig;
 import com.whmnrc.cdy.gpio.GPIOConstant;
 import com.whmnrc.cdy.gpio.GPIOSender;
 import com.whmnrc.cdy.gpio.MeasureType;
+import com.whmnrc.cdy.util.AndroidBug5497Workaround;
 import com.whmnrc.cdy.util.CodeTimeUtils;
 import com.whmnrc.cdy.util.ToastUtil;
 import com.whmnrc.cdy.widget.AlertUtils;
@@ -100,6 +101,7 @@ public class MeasureActivity extends BaseActivity {
 
     @Override
     protected void initViewData() {
+        AndroidBug5497Workaround.assistActivity(this);
         tvTitle.setText("测量参数设置");
         mMeasureType = (MeasureType) getIntent().getSerializableExtra("measureType");
         mMeasureConfig = new MeasureConfig(mMeasureType);
@@ -109,6 +111,7 @@ public class MeasureActivity extends BaseActivity {
     private void initUi() {
         switch (mMeasureType) {
             case AIR:
+                tvName.setText("空气氡");
                 llLa1.setVisibility(View.GONE);
                 llLa2.setVisibility(View.VISIBLE);
                 llLa3.setVisibility(View.VISIBLE);
@@ -126,6 +129,7 @@ public class MeasureActivity extends BaseActivity {
 
                 break;
             case SOIL:
+                tvName.setText("土壤氡");
                 llLa1.setVisibility(View.GONE);
                 llLa2.setVisibility(View.VISIBLE);
                 llLa3.setVisibility(View.VISIBLE);
@@ -142,6 +146,7 @@ public class MeasureActivity extends BaseActivity {
                 vD6.setVisibility(View.VISIBLE);
                 break;
             case WATER:
+                tvName.setText("水中氡");
                 llLa1.setVisibility(View.GONE);
                 llLa2.setVisibility(View.VISIBLE);
                 llLa3.setVisibility(View.VISIBLE);
@@ -158,6 +163,7 @@ public class MeasureActivity extends BaseActivity {
                 vD6.setVisibility(View.VISIBLE);
                 break;
             case BACKGROUND:
+                tvName.setText("本底测试");
                 llLa1.setVisibility(View.GONE);
                 llLa2.setVisibility(View.GONE);
                 llLa3.setVisibility(View.VISIBLE);
@@ -174,6 +180,8 @@ public class MeasureActivity extends BaseActivity {
                 vD6.setVisibility(View.GONE);
                 break;
             case RADON_EXHALATION_RATE:
+                tvName.setText("氡析出率");
+
                 llLa1.setVisibility(View.VISIBLE);
                 llLa2.setVisibility(View.VISIBLE);
                 llLa3.setVisibility(View.VISIBLE);
@@ -190,6 +198,8 @@ public class MeasureActivity extends BaseActivity {
                 vD6.setVisibility(View.VISIBLE);
                 break;
             case CONTINUOUS_MEASUREMENT:
+                tvName.setText("连续测量");
+
                 llLa1.setVisibility(View.GONE);
                 llLa2.setVisibility(View.VISIBLE);
                 llLa3.setVisibility(View.VISIBLE);
@@ -307,11 +317,6 @@ public class MeasureActivity extends BaseActivity {
                     });
                 }
             });
-
-
-
-
-
 
 
             mAndroidOperationQueue.start();

@@ -11,17 +11,17 @@ package com.whmnrc.cdy.gpio;
 public class GPIOSender {
 
     public static void write(int gpio, int value){
-        GPIOControl.exportGpio(gpio);
+//        GPIOControl.exportGpio(gpio);
         GPIOControl.setGpioDirection(gpio,GPIOConstant.GPIO_DIRECTION_OUT);
         GPIOControl.writeGpioStatus(gpio,value);
-        GPIOControl.unexportGpio(gpio);
+//        GPIOControl.unexportGpio(gpio);
     }
 
     public static int read(int gpio){
-        GPIOControl.exportGpio(gpio);
+//        GPIOControl.exportGpio(gpio);
         GPIOControl.setGpioDirection(gpio,GPIOConstant.GPIO_DIRECTION_IN);
         int statu = GPIOControl.readGpioStatus(gpio);
-        GPIOControl.unexportGpio(gpio);
+//        GPIOControl.unexportGpio(gpio);
         return statu;
     }
 

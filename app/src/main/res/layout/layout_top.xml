@@ -16,14 +16,13 @@
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="@dimen/dm_11"
-            android:layout_height="@dimen/dm_19"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
+            android:scaleType="center"
             android:src="@drawable/ic_back"
             android:visibility="visible"/>
     </RelativeLayout>
-
-
 
     <RelativeLayout
         android:id="@+id/common_title"

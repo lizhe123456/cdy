@@ -4,7 +4,6 @@ import com.blankj.utilcode.util.FragmentUtils;
 import com.whmnrc.cdy.R;
 import com.whmnrc.cdy.base.BaseActivity;
 
-
 public class MainActivity extends BaseActivity {
 
 
@@ -17,8 +16,6 @@ public class MainActivity extends BaseActivity {
     protected void initViewData() {
         FragmentUtils.add(getSupportFragmentManager(),HomeFragment.newInstance(),R.id.fl_content);
     }
-
-
 
 
 }
