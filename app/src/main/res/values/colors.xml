@@ -11,4 +11,5 @@
     <color name="v_d">#DDDDDD</color>
     <color name="auto_loadmore_text">#000000</color>
     <color name="green_bg">#63C03E</color>
+    <color name="text_primary">#DF000000</color>
 </resources>

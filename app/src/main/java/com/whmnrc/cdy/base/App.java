@@ -1,7 +1,9 @@
 package com.whmnrc.cdy.base;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.birbit.android.jobqueue.JobManager;
@@ -23,6 +25,12 @@ public class App extends Application {
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
     private JobManager jobManager;
+
+    public static int width;
+    public static int height;
+    public static float density;
+    public static int densityDpi;
+
 
     public synchronized static App getInstance() {
         if (instance == null) {
@@ -48,6 +56,7 @@ public class App extends Application {
         Utils.init(this);
         setDatabase();
         configureJobManager();
+        initDisplay(this);
     }
 
     private void setDatabase() {
@@ -60,6 +69,14 @@ public class App extends Application {
         // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();
+    }
+
+    public static void initDisplay(Context context) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        width = metrics.widthPixels;
+        height = metrics.heightPixels;
+        density = metrics.density;
+        densityDpi = metrics.densityDpi;
     }
 
     /**
